@@ -7,8 +7,7 @@ RUN apt-get update && apt-get install -y \
 
 ADD blogaggregator /blogaggregator
 WORKDIR /blogaggregator
-RUN pip install -r requirements.txt
-
+RUN pip install -r requirements/dev.txt
 # Expose ports
 EXPOSE 5000
 
