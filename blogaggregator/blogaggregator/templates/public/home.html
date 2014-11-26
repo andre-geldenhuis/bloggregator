@@ -12,6 +12,16 @@
 
 <div class="body-content">
   <div class="row">
+      
+    {% for user in allusers %}
+        <div class="col-lg-4">
+          <img src = {{ user.email  | gravatar }} alt="gravatar"/>
+          <h2><i class="fa fa-code"></i> {{ user.username }}</h2>
+          <p>Sleek, intuitive, and powerful mobile-first front-end framework for faster and easier web development.</p>
+          <p><a class="btn btn-default" href="http://getbootstrap.com/">Blog &raquo;</a></p>
+        </div>
+    {% endfor %}
+      
     <div class="col-lg-4">
       <h2><i class="fa fa-code"></i> Bootstrap 3</h2>
       <p>Sleek, intuitive, and powerful mobile-first front-end framework for faster and easier web development.</p>

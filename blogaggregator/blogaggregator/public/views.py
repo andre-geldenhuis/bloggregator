@@ -11,6 +11,7 @@ from blogaggregator.user.forms import RegisterForm
 from blogaggregator.utils import flash_errors
 from blogaggregator.database import db
 
+
 blueprint = Blueprint('public', __name__, static_folder="../static")
 
 @login_manager.user_loader
@@ -21,7 +22,15 @@ def load_user(id):
 @blueprint.route("/", methods=["GET", "POST"])
 def home():
     form = LoginForm(request.form)
-    # Handle logging in
+    
+    #get all the users who exist, TODO sort by last content, or if no content creation date
+    #get all users
+    allusers=User.query.all()
+    
+    
+    
+    
+    # Handle loggin
     if request.method == 'POST':
         if form.validate_on_submit():
             login_user(form.user)
@@ -30,7 +39,7 @@ def home():
             return redirect(redirect_url)
         else:
             flash_errors(form)
-    return render_template("public/home.html", form=form)
+    return render_template("public/home.html", form=form, allusers=allusers)
 
 @blueprint.route('/logout/')
 @login_required

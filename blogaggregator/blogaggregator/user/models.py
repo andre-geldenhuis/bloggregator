@@ -58,3 +58,23 @@ class User(UserMixin, SurrogatePK, Model):
 
     def __repr__(self):
         return '<User({username!r})>'.format(username=self.username)
+        
+
+class Post(SurrogatePK, Model):
+    __tablename__ = 'posts'
+    user_id = ReferenceCol('users', nullable=False)
+    user = relationship('User', backref='posts')
+    
+    content = Column(db.Text(), nullable=False)
+    link = Column(db.String(2000), nullable=True)
+    
+class Comment(SurrogatePK, Model):
+    __tablename__ = 'comments'
+    post_id = ReferenceCol('posts', nullable=False)
+    post = relationship('Post', backref='comments')
+    
+    user_id = ReferenceCol('users', nullable=False)
+    user = relationship('User', backref='comments')
+    
+    
+
