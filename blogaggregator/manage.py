@@ -10,6 +10,7 @@ from blogaggregator.app import create_app
 from blogaggregator.user.models import User
 from blogaggregator.settings import DevConfig, ProdConfig
 from blogaggregator.database import db
+from waitress import serve
 
 if os.environ.get("BLOGAGGREGATOR_ENV") == 'prod':
     app = create_app(ProdConfig)
@@ -31,6 +32,10 @@ def test():
     import pytest
     exit_code = pytest.main(['tests', '--verbose'])
     return exit_code
+
+@manager.command
+def runwaitress():
+    serve(app,host="0.0.0.0", port=5000)
 
 manager.add_command('server', Server())
 manager.add_command('shell', Shell(make_context=_make_context))
