@@ -26,8 +26,45 @@ textarea {
 }
 
 .usercard{
-    padding-bottom: 5%;
+    border-radius: 6px;
+    background: rgba(238, 238, 238, 0.8);
+    padding: 20px;
+    
 }
+
+/*jumbotron override */
+.jumbotron{
+    background: rgba(238, 238, 238, 0.8);
+}
+
+/* Parallax Scrolling */
+#intro {
+    background: url(/static/public/images/intro.png) 50% 0 fixed;
+    height: auto; 
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+
+}
+#home {
+    background: url(/static/public/images/home.jpg) 50% 0 fixed;
+    height: auto; 
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    
+
+}
+#about {
+    background: url(/static/public/images/about.png) 50% 0 fixed;
+    height: auto;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+
+    color: #fff;
+}
+
 
 /* Forms */
 

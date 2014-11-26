@@ -2,7 +2,8 @@
 {% extends "layout.html" %}
 {% block content %}
 <!-- Main jumbotron for a primary marketing message or call to action -->
-<div class="jumbotron">
+
+<div class="row jumbotron">
 
   <h1>Welcome to Flask Blog Aggregator</h1>
 
@@ -10,43 +11,55 @@
   <p><a href="https://github.com/sloria/cookiecutter-flask" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
 </div><!-- /.jumbotron -->
 
+
+
 <div class="body-content">
   <div class="row">
       
     {% for user in allusers %}
-        <div class="col-lg-4 usercard">
-          <img src = {{ user.email  | gravatar }} class = "img-responsive img-rounded" alt="gravatar"/>
-          <h2><i class="fa fa-code"></i> {{ user.username }}</h2>
-          <p>Sleek, intuitive, and powerful mobile-first front-end framework for faster and easier web development.</p>
-          <div class ="row">
-              <div class="col-sm-2">
-                  <p><a class="btn btn-default" href="http://getbootstrap.com/">Blog &raquo;</a></p>
-              </div>
-              {% if current_user and current_user.is_authenticated() %}
-                  <div class="col-sm-4 col-sm-offset-5 ">
-                    <p><a class="btn btn-default" href="http://getbootstrap.com/">Comment &raquo;</a></p> 
+        <div class="col-lg-4">
+            <div class="usercard">  
+              <img src = {{ user.email  | gravatar }} class = "img-responsive img-rounded" alt="gravatar"/>
+              <h2><i class="fa fa-code"></i> {{ user.username }}</h2>
+              <p>Sleek, intuitive, and powerful mobile-first front-end framework for faster and easier web development.</p>
+              <div class ="row">
+                  <div class="col-sm-2">
+                      <p><a class="btn btn-default" href="http://getbootstrap.com/">Blog &raquo;</a></p>
                   </div>
-              {% endif %}
-          </div>
+                  {% if current_user and current_user.is_authenticated() %}
+                      <div class="col-sm-4 col-sm-offset-5 ">
+                        <p><a class="btn btn-default" href="http://getbootstrap.com/">Comment &raquo;</a></p> 
+                      </div>
+                  {% endif %}
+              </div>
+            </div>
+            <p></p>
         </div>
     {% endfor %}
       
     <div class="col-lg-4">
+    <div class="usercard"> 
       <h2><i class="fa fa-code"></i> Bootstrap 3</h2>
       <p>Sleek, intuitive, and powerful mobile-first front-end framework for faster and easier web development.</p>
       <p><a class="btn btn-default" href="http://getbootstrap.com/">Official website &raquo;</a></p>
     </div>
+    </div>
     <div class="col-lg-4">
+    <div class="usercard">
       <h2><i class="fa fa-flask"></i> SQLAlchemy</h2>
       <p>SQLAlchemy is the Python SQL toolkit and Object Relational Mapper that gives application developers the full power and flexibility of SQL.</p>
       <p><a href="http://www.sqlalchemy.org/" class="btn btn-default" href="#">Official website &raquo;</a></p>
    </div>
+   </div>
     <div class="col-lg-4">
+    <div class="usercard">
       <h2><i class="fa fa-edit"></i> WTForms</h2>
       <p>WTForms is a flexible forms validation and rendering library for python web development.</p>
       <p><a href="http://wtforms.simplecodes.com/" class="btn btn-default" href="#">Official website &raquo;</a></p>
     </div>
+    </div>
   </div><!-- /.row -->
 </div>
+
 {% endblock %}
 

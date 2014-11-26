@@ -28,6 +28,7 @@
   {% block css %}{% endblock %}
 
 </head>
+
 <body class="{% block body_class %}{% endblock %}">
 {% block body %}
 {% with form=form  %}
@@ -35,30 +36,34 @@
 {% endwith %}
 
 <header>{% block header %}{% endblock %}</header>
-<div class="{% block content_class %}container{% endblock content_class %}">
+<section id="home" data-speed="4" data-type="background">
+    <div class="{% block content_class %}container{% endblock content_class %}">
+    
+      <div role="main">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="row">
+          <div class="col-md-12">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
+             {{message}}
+            </div><!-- end .alert -->
+            {% endfor %}
+          </div><!-- end col-md -->
+        </div><!-- end row -->
+            {% endif %}
+        {% endwith %}
+    
+        {% block content %}{% endblock %}
+      </div>
+    
+    </div><!-- end container -->
+</section>
 
-  <div role="main">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <div class="row">
-      <div class="col-md-12">
-        {% for category, message in messages %}
-        <div class="alert alert-{{ category }}">
-          <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
-         {{message}}
-        </div><!-- end .alert -->
-        {% endfor %}
-      </div><!-- end col-md -->
-    </div><!-- end row -->
-        {% endif %}
-    {% endwith %}
-
-    {% block content %}{% endblock %}
-  </div>
-
-</div><!-- end container -->
-
-{% include "footer.html" %}
+<section id="about" data-speed="2" data-type="background">
+    {% include "footer.html" %}
+</section>
 
 <!-- JavaScript at the bottom for fast page loading -->
 {% assets "js_all" %}
