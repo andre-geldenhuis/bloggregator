@@ -25,6 +25,10 @@ textarea {
   max-width: 700px;
 }
 
+.usercard{
+    padding-bottom: 5%;
+}
+
 /* Forms */
 
 .navbar-form input[type="text"],

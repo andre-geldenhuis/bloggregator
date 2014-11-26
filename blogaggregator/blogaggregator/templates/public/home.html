@@ -14,11 +14,20 @@
   <div class="row">
       
     {% for user in allusers %}
-        <div class="col-lg-4">
-          <img src = {{ user.email  | gravatar }} alt="gravatar"/>
+        <div class="col-lg-4 usercard">
+          <img src = {{ user.email  | gravatar }} class = "img-responsive img-rounded" alt="gravatar"/>
           <h2><i class="fa fa-code"></i> {{ user.username }}</h2>
           <p>Sleek, intuitive, and powerful mobile-first front-end framework for faster and easier web development.</p>
-          <p><a class="btn btn-default" href="http://getbootstrap.com/">Blog &raquo;</a></p>
+          <div class ="row">
+              <div class="col-sm-2">
+                  <p><a class="btn btn-default" href="http://getbootstrap.com/">Blog &raquo;</a></p>
+              </div>
+              {% if current_user and current_user.is_authenticated() %}
+                  <div class="col-sm-4 col-sm-offset-5 ">
+                    <p><a class="btn btn-default" href="http://getbootstrap.com/">Comment &raquo;</a></p> 
+                  </div>
+              {% endif %}
+          </div>
         </div>
     {% endfor %}
       

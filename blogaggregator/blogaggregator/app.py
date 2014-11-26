@@ -39,6 +39,7 @@ def register_extensions(app):
     debug_toolbar.init_app(app)
     migrate.init_app(app, db)
     gravatar.init_app(app)
+    gravatar.size = 500
     return None
 
 
