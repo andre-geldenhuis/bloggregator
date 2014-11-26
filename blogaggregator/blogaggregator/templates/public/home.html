@@ -3,36 +3,40 @@
 {% block content %}
 <!-- Main jumbotron for a primary marketing message or call to action -->
 
-<div class="row jumbotron">
-
-  <h1>Welcome to Flask Blog Aggregator</h1>
-
-  <p>This is a starter Flask template. It includes Bootstrap 3, jQuery 2, Flask-SQLAlchemy, WTForms, and various testing utilities out of the box.</p>
-  <p><a href="https://github.com/sloria/cookiecutter-flask" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
-</div><!-- /.jumbotron -->
-
+<div class="row">
+    <div class="col-md-12">
+    <div class="jumbotron">
+      <h1>Welcome to Flask Blog Aggregator</h1>
+    
+      <p>This is a starter Flask template. It includes Bootstrap 3, jQuery 2, Flask-SQLAlchemy, WTForms, and various testing utilities out of the box.</p>
+      <p><a href="https://github.com/sloria/cookiecutter-flask" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+    </div><!-- /.jumbotron -->
+    </div>
+</div>
 
 
 <div class="body-content">
   <div class="row">
       
     {% for user in allusers %}
-        <div class="col-lg-4">
+        <div class="col-md-4">
+            <center>
             <div class="usercard">  
               <img src = {{ user.email  | gravatar }} class = "img-responsive img-rounded" alt="gravatar"/>
-              <h2><i class="fa fa-code"></i> {{ user.username }}</h2>
+              <h2> {{ user.username }}</h2>
               <p>Sleek, intuitive, and powerful mobile-first front-end framework for faster and easier web development.</p>
               <div class ="row">
-                  <div class="col-sm-2">
+                  <div class="col-xs-1">
                       <p><a class="btn btn-default" href="http://getbootstrap.com/">Blog &raquo;</a></p>
                   </div>
                   {% if current_user and current_user.is_authenticated() %}
-                      <div class="col-sm-4 col-sm-offset-5 ">
+                      <div class="col-xs-4 pull-right ">
                         <p><a class="btn btn-default" href="http://getbootstrap.com/">Comment &raquo;</a></p> 
                       </div>
                   {% endif %}
               </div>
             </div>
+            </center>
             <p></p>
         </div>
     {% endfor %}
