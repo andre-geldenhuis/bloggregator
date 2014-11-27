@@ -1,5 +1,5 @@
 #Flask container based on debian jesse with the slora cookiecutter flask
-FROM ubuntu:14.04
+FROM debian:jessie
 MAINTAINER andre_g
 RUN apt-get update && apt-get install -y \
     python-dev \
