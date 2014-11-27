@@ -67,6 +67,7 @@ class Post(SurrogatePK, Model):
     
     content = Column(db.Text(), nullable=False)
     link = Column(db.String(2000), nullable=True)
+    created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     
 class Comment(SurrogatePK, Model):
     __tablename__ = 'comments'
