@@ -48,6 +48,10 @@ def cmdline():
     from flask.ext.login import login_required
     from flask.ext.login import current_user
     from blogaggregator.user.forms import User
+    from blogaggregator.user.models import User
+    from blogaggregator.user.models import Post
+    from sqlalchemy import desc
+
     1/0
 
 

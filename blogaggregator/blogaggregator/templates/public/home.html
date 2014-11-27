@@ -18,13 +18,13 @@
 <div class="body-content">
   <div class="row">
       
-    {% for user in allusers %}
+    {% for userblob in userlist %}
         <div class="col-md-4">
             <center>
             <div class="usercard">  
-              <img src = {{ user.email  | gravatar }} class = "img-responsive img-rounded" alt="gravatar"/>
-              <h2> {{ user.username }}</h2>
-              <p>Sleek, intuitive, and powerful mobile-first front-end framework for faster and easier web development.</p>
+              <img src = {{ userblob[1]  | gravatar }} class = "img-responsive img-rounded" alt="gravatar"/>
+              <h2> {{ userblob[0] }}</h2>
+              <p>{{ userblob[2] }}</p>
               <div class ="row">
                   <div class="col-xs-1">
                       <p><a class="btn btn-default" href="http://getbootstrap.com/">Blog &raquo;</a></p>

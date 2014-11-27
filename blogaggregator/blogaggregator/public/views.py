@@ -3,13 +3,18 @@
 from flask import (Blueprint, request, render_template, flash, url_for,
                     redirect, session)
 from flask.ext.login import login_user, login_required, logout_user
+from sqlalchemy import desc
 
 from blogaggregator.extensions import login_manager
 from blogaggregator.user.models import User
+from blogaggregator.user.models import Post
 from blogaggregator.public.forms import LoginForm
 from blogaggregator.user.forms import RegisterForm
 from blogaggregator.utils import flash_errors
 from blogaggregator.database import db
+
+
+
 
 
 blueprint = Blueprint('public', __name__, static_folder="../static")
@@ -26,6 +31,18 @@ def home():
     #get all the users who exist, TODO sort by last content, or if no content creation date
     #get all users
     allusers=User.query.all()
+    userlist=[]
+    for user in allusers:
+        try:
+            latestpost = Post.query.filter_by(user_id=user.id).order_by(desc(Post.created_at)).limit(1).one().content
+        except:
+            latestpost = "no posts :("
+        username=user.username
+        email = user.email
+        userlist.append( (username,email,latestpost) )
+    
+    #latests posts
+    #p1=Post.query.filter_by(user_id=1).order_by(desc(Post.created_at)).limit(1).one()
     
     
     
@@ -39,7 +56,7 @@ def home():
             return redirect(redirect_url)
         else:
             flash_errors(form)
-    return render_template("public/home.html", form=form, allusers=allusers)
+    return render_template("public/home.html", form=form, userlist=userlist)
 
 @blueprint.route('/logout/')
 @login_required

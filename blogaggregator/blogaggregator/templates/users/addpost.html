@@ -1,0 +1,28 @@
+
+{% extends "layout.html" %}
+{% block content %}
+    
+<div id="formdiv" class="boxrounded">
+        <form id="sidebar" class="row col-xs-12 form usercard" method="POST" action="" role="form">
+                
+            <div id="commentText" class="form-group">
+                <h3>Post</h3>
+                {{ form.content(placeholder="Post content
+                    ",rows=10, cols=35)|safe }}
+            </div>
+            
+            <div id="commentText" class="form-group">
+                <h3>Summary</h3>
+                {{ form.summary(placeholder="Summary Content
+                    ",rows=10, cols=35)|safe }}
+            </div>
+            
+            <div id="submitButton" class="form-group">
+                 <input class="btn btn-primary btn-submit" type="submit" value="Submit">
+            </div>
+        
+        </form>
+</div>
+    
+{% endblock %}
+
