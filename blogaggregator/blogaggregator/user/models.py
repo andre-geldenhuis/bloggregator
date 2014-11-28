@@ -38,6 +38,12 @@ class User(UserMixin, SurrogatePK, Model):
     last_name = Column(db.String(30), nullable=True)
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
+    
+    atomfeed = Column(db.String(2000), nullable=True)
+    atomposts= Column(db.Integer(), default=0)  #time in milliseconds
+    
+    #set last atom date to the UTC time stamp 0, (1970) so we can check for new posts
+    latest_atom = Column(db.DateTime, default=dt.datetime.utcfromtimestamp(0),nullable=False)
 
     def __init__(self, username, email, password=None, **kwargs):
         db.Model.__init__(self, username=username, email=email, **kwargs)
@@ -65,9 +71,14 @@ class Post(SurrogatePK, Model):
     user_id = ReferenceCol('users', nullable=False)
     user = relationship('User', backref='posts')
     
+    title = Column(db.String(300), nullable=True, default = "Title")
     content = Column(db.Text(), nullable=False)
+    summary = Column(db.Text(), nullable=False)
+    
     link = Column(db.String(2000), nullable=True)
+    atomuuid = Column(db.String(120), nullable=False)
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    
     
 class Comment(SurrogatePK, Model):
     __tablename__ = 'comments'

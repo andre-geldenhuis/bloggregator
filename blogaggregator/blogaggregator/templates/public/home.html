@@ -24,7 +24,7 @@
             <div class="usercard">  
               <img src = {{ userblob[1]  | gravatar }} class = "img-responsive img-rounded" alt="gravatar"/>
               <h2> {{ userblob[0] }}</h2>
-              <p>{{ userblob[2] }}</p>
+              <p>{{ userblob[2]|safe }}</p>
               <div class ="row">
                   <div class="col-xs-1">
                       <p><a class="btn btn-default" href="http://getbootstrap.com/">Blog &raquo;</a></p>

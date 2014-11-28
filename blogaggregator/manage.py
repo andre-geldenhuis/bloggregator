@@ -10,6 +10,9 @@ from blogaggregator.app import create_app
 from blogaggregator.user.models import User
 from blogaggregator.settings import DevConfig, ProdConfig
 from blogaggregator.database import db
+
+from roughatom import roughatom
+
 from waitress import serve
 
 if os.environ.get("BLOGAGGREGATOR_ENV") == 'prod':
@@ -54,6 +57,10 @@ def cmdline():
 
     1/0
 
+
+@manager.command
+def roughlyatom():
+    roughatom()
 
 manager.add_command('server', Server())
 manager.add_command('shell', Shell(make_context=_make_context))

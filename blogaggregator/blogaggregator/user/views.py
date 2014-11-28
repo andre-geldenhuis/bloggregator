@@ -6,6 +6,9 @@ from flask.ext.login import current_user
 from blogaggregator.user.forms import PostForm
 from blogaggregator.user.models import Post
 from blogaggregator.utils import flash_errors
+from blogaggregator.utils import summarise_post
+
+from uuid import uuid4
 
 blueprint = Blueprint("user", __name__, url_prefix='/users',
                         static_folder="../static")
@@ -25,8 +28,12 @@ def addpost():
     
     if request.method == 'POST':
         if form.validate_on_submit:
-            new_post = Post.create(content=form.content.data,
+            content = form.content.data
+            summary = summarise_post(content)
+            new_post = Post.create(content = content,
+                summary = summary,
                 user_id=current_user.id,
+                atomuuid=str(uuid4()),
                 link="")
             flash("Thanks for the post.", 'success')
             redirect_url = request.args.get("next") or url_for("user.members")

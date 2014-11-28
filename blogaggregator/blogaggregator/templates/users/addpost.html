@@ -4,7 +4,12 @@
     
 <div id="formdiv" class="boxrounded">
         <form id="sidebar" class="row col-xs-12 form usercard" method="POST" action="" role="form">
-                
+            
+            <div class="form-group">
+                {{form.title.label}}
+                {{form.title(placeholder="Title", class_="form-control")}}
+            </div>
+            
             <div id="commentText" class="form-group">
                 <h3>Post</h3>
                 {{ form.content(placeholder="Post content

@@ -7,6 +7,9 @@ Werkzeug==0.9.6
 Jinja2==2.7.3
 itsdangerous==0.24
 
+# HTML sanitising
+bleach==1.4
+
 # Database
 Flask-SQLAlchemy==2.0
 SQLAlchemy==0.9.8

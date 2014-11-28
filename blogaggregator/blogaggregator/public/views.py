@@ -13,6 +13,7 @@ from blogaggregator.user.forms import RegisterForm
 from blogaggregator.utils import flash_errors
 from blogaggregator.database import db
 
+from bleach import clean
 
 
 
@@ -34,9 +35,9 @@ def home():
     userlist=[]
     for user in allusers:
         try:
-            latestpost = Post.query.filter_by(user_id=user.id).order_by(desc(Post.created_at)).limit(1).one().content
+            latestpost = Post.query.filter_by(user_id=user.id).order_by(desc(Post.created_at)).limit(1).one().summary
         except:
-            latestpost = "no posts :("
+            latestpost = "no posts :(".ljust(144)
         username=user.username
         email = user.email
         userlist.append( (username,email,latestpost) )
@@ -71,6 +72,7 @@ def register():
     if form.validate_on_submit():
         new_user = User.create(username=form.username.data,
                         email=form.email.data,
+                        atomfeed=form.atomfeed.data,
                         password=form.password.data,
                         active=True)
         flash("Thank you for registering. You can now log in.", 'success')
