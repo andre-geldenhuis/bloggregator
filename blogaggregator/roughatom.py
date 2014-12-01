@@ -47,11 +47,5 @@ def roughatom():
             content=post0.content
             c0=content[0]
             current_post=c0.value
-            1/0
-            
-            #update post
-            new_post = Post.create(content=current_post,
-                user_id=user.id,
-                link="")
     
     

@@ -21,8 +21,9 @@
     {% for userblob in userlist %}
         <div class="col-md-4">
             <center>
-            <div class="usercard">  
-              <img src = {{ userblob[1]  | gravatar }} class = "img-responsive img-rounded" alt="gravatar"/>
+            <div id="usercard_{{ userblob[0] }}"  class="usercard"> 
+                <a href="{{ url_for('public.user',username=userblob[0]) }}"> <img src = {{ userblob[1]  | gravatar }} class = "img-responsive img-rounded" alt="gravatar"/>  </a>
+              
               <h2> {{ userblob[0] }}</h2>
               <p>{{ userblob[2]|safe }}</p>
               <div class ="row">

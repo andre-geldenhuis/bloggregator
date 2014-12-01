@@ -59,6 +59,31 @@ def home():
             flash_errors(form)
     return render_template("public/home.html", form=form, userlist=userlist)
 
+@blueprint.route('/user/<username>')
+def user(username):
+    user = User.query.filter_by(username=username).first()
+    if user == None:
+        flash('User %s not found.' % nickname)
+        return redirect(url_for('index'))
+    
+    posts=[]
+    posts_all = Post.query.filter_by(user_id=user.id).all()
+    for post in posts_all:
+        posts.append({'author':user, 'body':post.content})
+        
+    
+    #~ posts = [
+        #~ {'author': user, 'body': 'Test post #1'},
+        #~ {'author': user, 'body': 'Test post #2'}
+        #~ ]
+    
+    return render_template('public/user.html',
+                           user=user,
+                           posts=posts)
+    
+    
+
+
 @blueprint.route('/logout/')
 @login_required
 def logout():

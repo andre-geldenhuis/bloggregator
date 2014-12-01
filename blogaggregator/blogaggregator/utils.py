@@ -16,8 +16,8 @@ def summarise_post(content):
     Summarises and sanitises the post (removes possible javascript CSS).  
     '''
     if len(content)>140:
-        summary = clean(content[0:140]) + " ..."
+        summary = clean(content[0:140],strip=True) + " ..."
     else:
-        summary = clean(content).ljust(144) 
+        summary = clean(content,strip=True).ljust(144) 
     return summary
     
