@@ -67,15 +67,9 @@ def user(username):
         return redirect(url_for('index'))
     
     posts=[]
-    posts_all = Post.query.filter_by(user_id=user.id).all()
+    posts_all=db.session.query(Post).filter(Post.user_id==user.id).order_by(desc(Post.created_at)).all()
     for post in posts_all:
         posts.append({'author':user, 'body':post.content})
-        
-    
-    #~ posts = [
-        #~ {'author': user, 'body': 'Test post #1'},
-        #~ {'author': user, 'body': 'Test post #2'}
-        #~ ]
     
     return render_template('public/user.html',
                            user=user,
