@@ -63,7 +63,7 @@ def home():
 def user(username):
     user = User.query.filter_by(username=username).first()
     if user == None:
-        flash('User %s not found.' % nickname)
+        flash('User %s not found.' % username)
         return redirect(url_for('index'))
     
     posts=[]

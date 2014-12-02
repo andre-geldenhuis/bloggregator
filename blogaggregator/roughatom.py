@@ -9,7 +9,7 @@ def roughatom():
     from blogaggregator.user.models import User
     from blogaggregator.user.models import Post
     import feedparser
-    from blogaggregator.utils import summarise_post
+    from blogaggregator.utils import summarise_post, clean_feed
     
     from time import mktime
     from datetime import datetime
@@ -33,7 +33,7 @@ def roughatom():
                     updated_at = datetime.fromtimestamp(mktime(post.updated_parsed))
                     content = post.content[0].value
                     summary = summarise_post(content)
-                    new_post = Post.create(content = content,
+                    new_post = Post.create(content = clean_feed(content),
                         summary = summary,
                         user_id=user.id,
                         atomuuid=post.id,
@@ -47,5 +47,5 @@ def roughatom():
             content=post0.content
             c0=content[0]
             current_post=c0.value
-    
+    1/0
     

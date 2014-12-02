@@ -54,6 +54,17 @@ def cmdline():
     from blogaggregator.user.models import User
     from blogaggregator.user.models import Post
     from sqlalchemy import desc
+    from blogaggregator.utils import summarise_post, clean_feed
+    
+    posts_all=db.session.query(Post).filter(Post.user_id==1).order_by(desc(Post.created_at)).all()
+    p1=posts_all[0]
+    content=p1.content
+    content=content
+    with open('raw.html','w') as f:
+        f.write(content.encode('utf-8'))
+    with open('cleaned.html','w') as f:
+        c_content = clean_feed(content)
+        f.write(c_content.encode('utf-8'))
 
     1/0
 
