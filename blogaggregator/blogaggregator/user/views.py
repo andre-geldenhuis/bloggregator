@@ -65,6 +65,11 @@ def comment(username,postid):
             new_comment = Comment.create(content=form.comment.data,
                 post_id=postid,
                 user_id=current_user.id)
+            #update count on posts
+            post=Post.query.filter_by(id=postid).first()
+            comment_count=db.session.query(Comment).filter(Comment.post_id==postid).order_by(asc(Comment.created_at)).count()
+            post.comment_count=comment_count
+            db.session.commit()
             flash("Thanks for making a comment.", 'success')
             redirect_url =  url_for('user.comment',username=username, postid=postid)
             return redirect(redirect_url)

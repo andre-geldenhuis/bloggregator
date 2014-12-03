@@ -53,6 +53,7 @@ def cmdline():
     from blogaggregator.user.forms import User
     from blogaggregator.user.models import User
     from blogaggregator.user.models import Post
+    from blogaggregator.user.models import Comment
     from sqlalchemy import desc
     from blogaggregator.utils import summarise_post, clean_feed
     
