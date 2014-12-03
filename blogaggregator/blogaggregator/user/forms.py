@@ -47,3 +47,13 @@ class PostForm(Form):
             self.username.errors.append("Failed vaildation")
             return False
         return True
+
+class CommentForm(Form):
+    comment = TextAreaField('Comment',validators=[DataRequired(), Length(min=3, max=25)])
+    
+    def validate(self):
+        initial_validation = super(RegisterForm, self).validate()
+        if not initial_validation:
+            self.username.errors.append("Failed vaildation")
+            return False
+        return True
