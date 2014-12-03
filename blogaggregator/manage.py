@@ -60,11 +60,6 @@ def cmdline():
     p1=posts_all[0]
     content=p1.content
     content=content
-    with open('raw.html','w') as f:
-        f.write(content.encode('utf-8'))
-    with open('cleaned.html','w') as f:
-        c_content = clean_feed(content)
-        f.write(c_content.encode('utf-8'))
 
     1/0
 

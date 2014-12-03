@@ -40,7 +40,7 @@ class User(UserMixin, SurrogatePK, Model):
     is_admin = Column(db.Boolean(), default=False)
     
     atomfeed = Column(db.String(2000), nullable=True)
-    atomposts= Column(db.Integer(), default=0)  #time in milliseconds
+    atomposts= Column(db.Integer(), default=0)  
     
     #set last atom date to the UTC time stamp 0, (1970) so we can check for new posts
     latest_atom = Column(db.DateTime, default=dt.datetime.utcfromtimestamp(0),nullable=False)
@@ -78,6 +78,10 @@ class Post(SurrogatePK, Model):
     link = Column(db.String(2000), nullable=True)
     atomuuid = Column(db.String(120), nullable=False)
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    edited_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    
+    #number of comments
+    comment_count = Column(db.Integer(), default=0)  
     
     
 class Comment(SurrogatePK, Model):
@@ -87,6 +91,13 @@ class Comment(SurrogatePK, Model):
     
     user_id = ReferenceCol('users', nullable=False)
     user = relationship('User', backref='comments')
+    
+    created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    edited_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+    
+    content = Column(db.Text(), nullable=False)
+    
+    
     
     
 

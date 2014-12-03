@@ -70,7 +70,7 @@ def user(username):
     posts=[]
     posts_all=db.session.query(Post).filter(Post.user_id==user.id).order_by(desc(Post.created_at)).all()
     for post in posts_all:
-        posts.append({'author':user, 'body':post.content})
+        posts.append({'author':user, 'body':post.content,'comments':post.comment_count})
     
     return render_template('public/user.html',
                            user=user,
