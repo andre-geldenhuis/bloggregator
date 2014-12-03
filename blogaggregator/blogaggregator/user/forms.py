@@ -12,6 +12,7 @@ class RegisterForm(Form):
     email = TextField('Email',
                     validators=[DataRequired(), Email(), Length(min=6, max=40)])
     atomfeed = URLField(validators=[url()])
+    registrationkey = TextField('Registration Key',validators=[DataRequired()])
     password = PasswordField('Password',
                                 validators=[DataRequired(), Length(min=6, max=40)])
     confirm = PasswordField('Verify password',
@@ -32,6 +33,9 @@ class RegisterForm(Form):
         user = User.query.filter_by(email=self.email.data).first()
         if user:
             self.email.errors.append("Email already registered")
+            return False
+        if self.registrationkey.data != "DS106TestKey":
+            self.registrationkey.errors.append("Please enter the correct registration key")
             return False
         return True
 
