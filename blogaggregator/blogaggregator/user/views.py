@@ -66,24 +66,44 @@ def comment(username,postid):
     
 
 # TODO fix, this doesn't also display the commments as it should    
-@blueprint.route("/posts/<username>/<postid>/comment", methods=["POST","GET"])
+@blueprint.route("/posts/<username>/<postid>/comment/<commentmethod>", methods=["POST","GET"])
 @login_required
-def makecomment(username,postid):
-    form = CommentForm(request.form)
+def makecomment(username,postid,commentmethod):
+    if commentmethod == 'new':
+        form = CommentForm(request.form)
+    elif commentmethod == 'edit':
+        comment_last=db.session.query(Comment).filter(Comment.post_id==postid).order_by(desc(Comment.created_at)).first()
+        # if the current user is the one who made the last comment, allow editing
+        if comment_last.user_id == current_user.id:
+            old_content=comment_last.content
+            row={'comment':old_content}
+            form = CommentForm(**row)
+        else:
+            flash("Sorry you cannot edit this post","warning")
+            redirect_url =  url_for('user.comment',username=username, postid=postid)
+    else: #invalid var passed to url builder
+        redirect_url =  url_for('user.comment',username=username, postid=postid)
+        return redirect(redirect_url)
+    
     if request.method == "GET":
         pass
     if request.method == "POST":
         if form.validate_on_submit:
             comment = form.comment.data
-            new_comment = Comment.create(content=form.comment.data,
-                post_id=postid,
-                user_id=current_user.id)
-            #update count on posts
-            post=Post.query.filter_by(id=postid).first()
-            comment_count=db.session.query(Comment).filter(Comment.post_id==postid).order_by(asc(Comment.created_at)).count()
-            post.comment_count=comment_count
+            if commentmethod == 'new':
+                new_comment = Comment.create(content=form.comment.data,
+                    post_id = postid,
+                    user_id = current_user.id)
+                #update count on posts
+                post=Post.query.filter_by(id = postid).first()
+                comment_count=db.session.query(Comment).filter(Comment.post_id==postid).order_by(asc(Comment.created_at)).count()
+                post.comment_count=comment_count
+                flash("Thanks for making a comment.", 'success')
+            elif commentmethod == 'edit':
+                comment_last.content = comment
+                flash("Comment edited.", 'success')
             db.session.commit()
-            flash("Thanks for making a comment.", 'success')
+            
             redirect_url =  url_for('user.comment',username=username, postid=postid)
             return redirect(redirect_url)
         else:
@@ -92,37 +112,3 @@ def makecomment(username,postid):
             return redirect(redirect_url)
     return render_template('users/newcomment.html',form=form)
 
-# TODO modify this for code reuse!  really similar to makecomment
-@blueprint.route("/posts/<username>/<postid>/editcomment", methods=["POST","GET"])
-@login_required
-def editcomment(username,postid):
-    # Check if user is still allowed to make edit
-    allowedit = False # by default, no edits
-    comment_last=db.session.query(Comment).filter(Comment.post_id==postid).order_by(desc(Comment.created_at)).first()
-    if comment_last.user_id == current_user.id :
-        old_content=comment_last.content
-        row={'comment':old_content}
-        form = CommentForm(**row)
-        if request.method == "GET":
-            pass
-            
-        if request.method == "POST":
-            if form.validate_on_submit:
-                commentedit = form.comment.data
-                comment_last.content=commentedit
-                db.session.commit()
-                flash("Comment edited.", 'success')
-                redirect_url =  url_for('user.comment',username=username, postid=postid)
-                return redirect(redirect_url)
-            else:
-                flash_errors(form)
-                redirect_url =  url_for('user.comment',username=username, postid=postid)
-                return redirect(redirect_url)
-        return render_template('users/editcomment.html',form=form)
-    
-    else:
-        flash("Sorry you cannot edit this post","warning")
-        redirect_url =  url_for('user.comment',username=username, postid=postid)
-        
-    
-    

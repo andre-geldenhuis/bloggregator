@@ -21,19 +21,15 @@
       {% endfor %}
       
       <div class="col-sm-3 commentcard">
-          <a href="{{ url_for('user.makecomment',username=username,postid=postid) }}"> Make Comment </a>
+          <a href="{{ url_for('user.makecomment',username=username,postid=postid,commentmethod='new') }}"> Make Comment </a>
       </div>
       
       {% if allowedit == True %}
         
         <div class="col-sm-3 commentcard">
-            <a href="{{ url_for('user.editcomment',username=username,postid=postid) }}"> Edit Last Comment </a>
+            <a href="{{ url_for('user.makecomment',username=username,postid=postid,commentmethod='edit') }}"> Edit Last Comment </a>
         </div>
 
       {% endif %}
-
-
-  
-
 
 {% endblock %}
