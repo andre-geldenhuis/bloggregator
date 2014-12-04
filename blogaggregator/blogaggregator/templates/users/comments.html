@@ -5,13 +5,21 @@
    
   <h1>Comments</h1>
     
-    <div class="row">
+  
       {% for comment in comments_all %}
-          <div class="col-sm-12 usercard">
+          <div class="col-sm-12 commentcard">
+            <div class="col-sm-12">
                 {{ comment.content|safe }}
+            </div>
+            <div class="col-sm-12">
+                <hr>
+            </div>
+            <div class="col-sm-2">
+                <b>{{ comment.user.username|capitalize  }}</b>
+            </div>
           </div>
       {% endfor %}
-      <form id="sidebar" class="row col-xs-12 form usercard" method="POST" action="" role="form">
+      <form id="sidebar" class="col-sm-12 form usercard" method="POST" action="" role="form">
         <h3>Make Comment</h3>
         
         <div class="form-group">
@@ -26,6 +34,6 @@
 
 
   
-  </div>
+
 
 {% endblock %}

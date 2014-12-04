@@ -56,6 +56,7 @@ def cmdline():
     from blogaggregator.user.models import Comment
     from sqlalchemy import desc
     from blogaggregator.utils import summarise_post, clean_feed
+    from sqlalchemy import asc
     
     posts_all=db.session.query(Post).filter(Post.user_id==1).order_by(desc(Post.created_at)).all()
     p1=posts_all[0]
