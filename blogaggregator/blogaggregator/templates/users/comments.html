@@ -2,9 +2,9 @@
 {% extends "layout.html" %}
 
 {% block content %}
-   
-  <h1>Comments</h1>
-    
+   <div class="commentcard">
+      <h1>Comments</h1>
+   </div> 
   
       {% for comment in comments_all %}
           <div class="col-sm-12 commentcard">
@@ -19,18 +19,18 @@
             </div>
           </div>
       {% endfor %}
-      <form id="sidebar" class="col-sm-12 form usercard" method="POST" action="" role="form">
-        <h3>Make Comment</h3>
+      
+      <div class="col-sm-3 commentcard">
+          <a href="{{ url_for('user.makecomment',username=username,postid=postid) }}"> Make Comment </a>
+      </div>
+      
+      {% if allowedit == True %}
         
-        <div class="form-group">
-        {{ form.comment(placeholder="Comment?
-            ",rows=10, cols=35) }}
+        <div class="col-sm-3 commentcard">
+            <a href="{{ url_for('user.editcomment',username=username,postid=postid) }}"> Edit Last Comment </a>
         </div>
-            
-        <div id="submitButton" class="form-group">
-            <input class="btn btn-primary btn-submit" type="submit" value="Submit">
-        </div>
-      </form>
+
+      {% endif %}
 
 
   

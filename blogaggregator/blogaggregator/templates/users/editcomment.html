@@ -1,0 +1,19 @@
+<!-- extends layout -->
+{% extends "layout.html" %}
+
+{% block content  %}
+   
+      <form id="sidebar" class="col-sm-12 form usercard" method="POST" action="" role="form">
+        <h3>Edit Comment</h3>
+        
+        <div class="form-group">
+        {{ form.comment(placeholder="Comment?
+            ",rows=10, cols=35) }}
+        </div>
+            
+        <div id="submitButton" class="form-group">
+            <input class="btn btn-primary btn-submit" type="submit" value="Submit">
+        </div>
+      </form>
+
+{% endblock %}
