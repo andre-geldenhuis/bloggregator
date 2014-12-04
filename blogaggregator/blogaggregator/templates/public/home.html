@@ -6,10 +6,10 @@
 <div class="row">
     <div class="col-md-12">
     <div class="jumbotron">
-      <h1>Welcome to Flask Blog Aggregator</h1>
+      <h1>Welcome to the Blog Aggregator</h1>
     
-      <p>This is a starter Flask template. It includes Bootstrap 3, jQuery 2, Flask-SQLAlchemy, WTForms, and various testing utilities out of the box.</p>
-      <p><a href="https://github.com/sloria/cookiecutter-flask" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+      <p>This is the start of a blog aggregator for our MOOC, or COOL</p>
+      <p><a href="http://goo.gl/PFMvL0" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
     </div><!-- /.jumbotron -->
     </div>
 </div>
@@ -28,11 +28,11 @@
               <p>{{ userblob[2]|safe }}</p>
               <div class ="row">
                   <div class="col-xs-1">
-                      <p><a class="btn btn-default" href="http://getbootstrap.com/">Blog &raquo;</a></p>
+                      <p><a class="btn btn-default" href="{{ userblob[3] }}">Blog &raquo;</a></p>
                   </div>
                   {% if current_user and current_user.is_authenticated() %}
-                      <div class="col-xs-4 pull-right ">
-                        <p><a class="btn btn-default" href="http://getbootstrap.com/">Comment &raquo;</a></p> 
+                      <div class="col-xs-5 pull-right ">
+                        <p><a href="{{ url_for('user.makecomment',username=username,postid=postid,commentmethod='new') }}" class="btn btn-default"> Comment &raquo; </a></p>
                       </div>
                   {% endif %}
               </div>
@@ -41,28 +41,6 @@
             <p></p>
         </div>
     {% endfor %}
-      
-    <div class="col-lg-4">
-    <div class="usercard"> 
-      <h2><i class="fa fa-code"></i> Bootstrap 3</h2>
-      <p>Sleek, intuitive, and powerful mobile-first front-end framework for faster and easier web development.</p>
-      <p><a class="btn btn-default" href="http://getbootstrap.com/">Official website &raquo;</a></p>
-    </div>
-    </div>
-    <div class="col-lg-4">
-    <div class="usercard">
-      <h2><i class="fa fa-flask"></i> SQLAlchemy</h2>
-      <p>SQLAlchemy is the Python SQL toolkit and Object Relational Mapper that gives application developers the full power and flexibility of SQL.</p>
-      <p><a href="http://www.sqlalchemy.org/" class="btn btn-default" href="#">Official website &raquo;</a></p>
-   </div>
-   </div>
-    <div class="col-lg-4">
-    <div class="usercard">
-      <h2><i class="fa fa-edit"></i> WTForms</h2>
-      <p>WTForms is a flexible forms validation and rendering library for python web development.</p>
-      <p><a href="http://wtforms.simplecodes.com/" class="btn btn-default" href="#">Official website &raquo;</a></p>
-    </div>
-    </div>
   </div><!-- /.row -->
 </div>
 

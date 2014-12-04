@@ -43,7 +43,6 @@ class PostForm(Form):
     title = TextField('Title',
                     validators=[DataRequired(), Length(min=3, max=125)])
     content = TextAreaField('Comment',validators=[DataRequired(), Length(min=3, max=25)])
-    summary = TextAreaField('Comment') 
     
     def validate(self):
         initial_validation = super(RegisterForm, self).validate()

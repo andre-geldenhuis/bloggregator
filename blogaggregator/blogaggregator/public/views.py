@@ -40,7 +40,8 @@ def home():
             latestpost = "no posts :(".ljust(144)
         username=user.username
         email = user.email
-        userlist.append( (username,email,latestpost) )
+        atomfeed = user.atomfeed
+        userlist.append( (username,email,latestpost,user.atomfeed) )
     
     #latests posts
     #p1=Post.query.filter_by(user_id=1).order_by(desc(Post.created_at)).limit(1).one()
