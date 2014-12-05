@@ -63,9 +63,10 @@ def comment(username,postid):
     if not comments_all :
         comments_all=[{'user':'username','content':'No comments yet :('}]
     else:  #check if the last post is byt he current user (for comment edits)
-        last_comment_userid=comments_all[-1].user.id
-        if last_comment_userid == current_user.id:
-            allowedit = True
+        last_comment_userid=comments_all[-1].user.id        
+        if current_user.is_authenticated():
+            if last_comment_userid == current_user.id:
+                allowedit = True
     return render_template('users/comments.html',username=username,postid=postid,comments_all=comments_all, allowedit=allowedit)
     
 
