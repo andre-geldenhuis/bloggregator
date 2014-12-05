@@ -7,15 +7,18 @@ from sqlalchemy import asc, desc
 from blogaggregator.user.forms import PostForm
 from blogaggregator.user.forms import CommentForm
 from blogaggregator.user.models import Post
+from blogaggregator.user.models import User
 from blogaggregator.user.models import Comment
 from blogaggregator.utils import flash_errors
 from blogaggregator.utils import summarise_post
+from blogaggregator.utils import check_latest_update
 from blogaggregator.database import db
 
 from uuid import uuid4
 
 blueprint = Blueprint("user", __name__, url_prefix='/users',
                         static_folder="../static")
+
 
 
 @blueprint.route("/")
@@ -39,6 +42,7 @@ def addpost():
                 user_id=current_user.id,
                 atomuuid=str(uuid4()),
                 link="")
+            check_latest_update(user,new_post)
             flash("Thanks for the post.", 'success')
             redirect_url = request.args.get("next") or url_for("user.members")
             return redirect(redirect_url)
@@ -56,8 +60,8 @@ def comment(username,postid):
     #~ form = CommentForm(request.form)
     allowedit = False # by default, no edits
     comments_all=db.session.query(Comment).filter(Comment.post_id==postid).order_by(asc(Comment.created_at)).all()
-    if comments_all == None:
-        comments_all=[{'content':'No comments yet :('}]
+    if not comments_all :
+        comments_all=[{'user':'username','content':'No comments yet :('}]
     else:  #check if the last post is byt he current user (for comment edits)
         last_comment_userid=comments_all[-1].user.id
         if last_comment_userid == current_user.id:
@@ -69,6 +73,10 @@ def comment(username,postid):
 @blueprint.route("/posts/<username>/<postid>/comment/<commentmethod>", methods=["POST","GET"])
 @login_required
 def makecomment(username,postid,commentmethod):
+    #get the post owner user from url input
+    post_owner = User.query.filter_by(username=username).first()
+    
+    
     if commentmethod == 'new':
         form = CommentForm(request.form)
     elif commentmethod == 'edit':
@@ -94,6 +102,8 @@ def makecomment(username,postid,commentmethod):
                 new_comment = Comment.create(content=form.comment.data,
                     post_id = postid,
                     user_id = current_user.id)
+                
+                check_latest_update(post_owner,new_comment)
                 #update count on posts
                 post=Post.query.filter_by(id = postid).first()
                 comment_count=db.session.query(Comment).filter(Comment.post_id==postid).order_by(asc(Comment.created_at)).count()
@@ -101,6 +111,7 @@ def makecomment(username,postid,commentmethod):
                 flash("Thanks for making a comment.", 'success')
             elif commentmethod == 'edit':
                 comment_last.content = comment
+                check_latest_update(post_owner,comment_last)
                 flash("Comment edited.", 'success')
             db.session.commit()
             

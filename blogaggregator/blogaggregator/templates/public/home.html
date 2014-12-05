@@ -18,21 +18,21 @@
 <div class="body-content">
   <div class="row">
       
-    {% for userblob in userlist %}
+    {% for post_obj in postlist %}
         <div class="col-md-4">
             <center>
-            <div id="usercard_{{ userblob[0] }}"  class="usercard"> 
-                <a href="{{ url_for('public.user',username=userblob[0]) }}"> <img src = {{ userblob[1]  | gravatar }} class = "img-responsive img-rounded" alt="gravatar"/>  </a>
+            <div id="usercard_{{ post_obj.user.username }}"  class="usercard"> 
+                <a href="{{ url_for('public.user',username=post_obj.user.username) }}"> <img src = {{ post_obj.user.email  | gravatar }} class = "img-responsive img-rounded" alt="gravatar"/>  </a>
               
-              <h2> {{ userblob[0] }}</h2>
-              <p>{{ userblob[2]|safe }}</p>
+              <h2> {{ post_obj.user.username }}</h2>
+              <p>{{ post_obj.summary|safe }}</p>
               <div class ="row">
                   <div class="col-xs-1">
-                      <p><a class="btn btn-default" href="{{ userblob[3] }}">Blog &raquo;</a></p>
+                      <p><a class="btn btn-default" href="{{ post_obj.user.atomfeed }}">Blog &raquo;</a></p>
                   </div>
                   {% if current_user and current_user.is_authenticated() %}
                       <div class="col-xs-5 pull-right ">
-                        <p><a href="{{ url_for('user.makecomment',username=username,postid=postid,commentmethod='new') }}" class="btn btn-default"> Comment &raquo; </a></p>
+                        <p><a href="{{ url_for('user.makecomment',username=post_obj.user.username,postid=post_obj.id,commentmethod='new') }}" class="btn btn-default"> Comment &raquo; </a></p>
                       </div>
                   {% endif %}
               </div>

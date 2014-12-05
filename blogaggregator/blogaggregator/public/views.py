@@ -32,23 +32,17 @@ def home():
     #get all the users who exist, TODO sort by last content, or if no content creation date
     #get all users
     allusers=User.query.all()
-    userlist=[]
+    postlist=[]
     for user in allusers:
         latestpost_object = Post.query.filter_by(user_id=user.id).order_by(desc(Post.created_at)).limit(1).first()
         if latestpost_object == None:
-            latestpost = "no posts :(".ljust(144)
+            pass 
         else:
-            latestpost = latestpost_object.summary
-        username=user.username
-        email = user.email
-        atomfeed = user.atomfeed
-        userlist.append( (username,email,latestpost,user.atomfeed) )
+            latestpost = latestpost_object
+            
+        postlist.append(latestpost)
     
-    #latests posts
-    #p1=Post.query.filter_by(user_id=1).order_by(desc(Post.created_at)).limit(1).one()
-    
-    
-    
+    #sort postlist by 
     
     # Handle loggin
     if request.method == 'POST':
@@ -59,7 +53,7 @@ def home():
             return redirect(redirect_url)
         else:
             flash_errors(form)
-    return render_template("public/home.html", form=form, userlist=userlist)
+    return render_template("public/home.html", form=form, postlist=postlist)
 
 @blueprint.route('/user/<username>')
 def user(username):
