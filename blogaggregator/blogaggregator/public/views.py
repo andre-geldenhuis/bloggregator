@@ -34,10 +34,11 @@ def home():
     allusers=User.query.all()
     userlist=[]
     for user in allusers:
-        try:
-            latestpost = Post.query.filter_by(user_id=user.id).order_by(desc(Post.created_at)).limit(1).one().summary
-        except:
+        latestpost_object = Post.query.filter_by(user_id=user.id).order_by(desc(Post.created_at)).limit(1).first()
+        if latestpost_object == None:
             latestpost = "no posts :(".ljust(144)
+        else:
+            latestpost = latestpost_object.summary
         username=user.username
         email = user.email
         atomfeed = user.atomfeed
