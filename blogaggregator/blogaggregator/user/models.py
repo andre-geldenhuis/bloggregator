@@ -44,6 +44,9 @@ class User(UserMixin, SurrogatePK, Model):
     
     #set last atom date to the UTC time stamp 0, (1970) so we can check for new posts
     latest_atom = Column(db.DateTime, default=dt.datetime.utcfromtimestamp(0),nullable=False)
+    
+    # Latest update, either post, atom, or comment made on a post of this user
+    latest_update = Column(db.DateTime, default=dt.datetime.utcfromtimestamp(0),nullable=False)
 
     def __init__(self, username, email, password=None, **kwargs):
         db.Model.__init__(self, username=username, email=email, **kwargs)

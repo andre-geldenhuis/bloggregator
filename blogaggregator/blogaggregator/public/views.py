@@ -43,6 +43,9 @@ def home():
         postlist.append(latestpost)
     
     #sort postlist by 
+    postlist.sort(key = lambda x: x.user.latest_update, reverse=True)
+    
+    
     
     # Handle loggin
     if request.method == 'POST':

@@ -4,6 +4,7 @@ from flask import flash
 from bleach import clean
 from bs4 import BeautifulSoup
 import re
+from blogaggregator.database import db
 
 
 def flash_errors(form, category="warning"):
@@ -12,6 +13,16 @@ def flash_errors(form, category="warning"):
         for error in errors:
             flash("{0} - {1}"
                     .format(getattr(form, field).label.text, error), category)
+
+
+def check_latest_update(user,new_content):
+    '''
+    Simple function to update the users latest update if the new content created at
+    is newer.
+    '''
+    if new_content.created_at > user.latest_update:
+        user.latest_update = new_content.created_at
+        db.session.commit()
 
  
 def summarise_post(content):
