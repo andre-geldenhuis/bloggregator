@@ -16,8 +16,10 @@ from roughatom import roughatom
 from waitress import serve
 
 if os.environ.get("BLOGAGGREGATOR_ENV") == 'prod':
-    app = create_app(ProdConfig)
+	print "production enviroment"
+	app = create_app(ProdConfig)
 else:
+    print "development enviroment"
     app = create_app(DevConfig)
 
 manager = Manager(app)
@@ -38,7 +40,7 @@ def test():
 
 @manager.command
 def runwaitress():
-    serve(app,host="0.0.0.0", port=5000)
+    serve(app,host="0.0.0.0", port=80)
 
 
 @manager.command

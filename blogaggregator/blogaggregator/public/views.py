@@ -16,7 +16,10 @@ from blogaggregator.database import db
 from bleach import clean
 
 
-
+class NoPosts:          
+    def __init__( self, user ):
+        self.user = user
+        self.summary = "No Posts :("
 
 blueprint = Blueprint('public', __name__, static_folder="../static")
 
@@ -29,23 +32,23 @@ def load_user(id):
 def home():
     form = LoginForm(request.form)
     
-    #get all the users who exist, TODO sort by last content, or if no content creation date
-    #get all users
+    #get all the users who exist
     allusers=User.query.all()
     postlist=[]
     for user in allusers:
         latestpost_object = Post.query.filter_by(user_id=user.id).order_by(desc(Post.created_at)).limit(1).first()
         if latestpost_object == None:
-            pass 
+            latestpost = NoPosts(user)
         else:
             latestpost = latestpost_object
             
         postlist.append(latestpost)
     
-    #sort postlist by 
-    postlist.sort(key = lambda x: x.user.latest_update, reverse=True)
-    
-    
+    #sort postlist by latest post or comment IF there are any posts
+    if len(postlist) == 1 and postlist[0] == "":
+        pass
+    else:
+        postlist.sort(key = lambda x: x.user.latest_update, reverse=True)
     
     # Handle loggin
     if request.method == 'POST':
