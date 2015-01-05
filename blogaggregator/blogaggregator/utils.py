@@ -5,6 +5,9 @@ from bleach import clean
 from bs4 import BeautifulSoup
 import re
 from blogaggregator.database import db
+from blogaggregator.user.models import User
+from blogaggregator.user.models import Post
+import feedparser
 
 
 def flash_errors(form, category="warning"):
@@ -69,4 +72,58 @@ def clean_feed(content):
     content = soup.prettify()
     #content = clean(content,strip=True,tags=allowed_tags, attributes=allowed_attr)
     return content
+
+def good_feed(atomfeed):
+    '''
+    Simple checking function to determine if an atom feed is minimally viable.
+    Note, this will return true for all feeds including RSS feeds and feeds that
+    are malformed and cannot be passed.  Passing this test does not ensure
+    the feed will be usable!
+    '''
+    print atomfeed
+    feed = feedparser.parse(atomfeed)
+    
+    #check if it is a valid feed
+    if feed.bozo != 0:
+        print "bad feed"
+        return False
+    else:
+        return True
+    
+    
+
+def feed_atom(user):
+    '''
+    Given a user with a valid atom feed, this will read and summarise the feed
+    '''
+    if good_feed(user.atomfeed):
+        entries=feed.entries
+        
+        #check for the existance of the posts in the database
+        for post in entries:
+            matching_post = Post.query.filter_by(atomuuid = post.id)
+            if matching_post.count() == 0:  #no matching posts
+                created_at = datetime.fromtimestamp(mktime(post.published_parsed))
+                updated_at = datetime.fromtimestamp(mktime(post.updated_parsed))
+                content = post.content[0].value
+                summary = summarise_post(content)
+                new_post = Post.create(content = clean_feed(content),
+                    summary = summary,
+                    user_id=user.id,
+                    atomuuid=post.id,
+                    link=post.link,
+                    created_at = created_at)
+                #updated user latest update if necessary
+                check_latest_update(user,new_post)
+                
+            
+            
+        post0=entries[0]
+        dt = datetime.fromtimestamp(mktime(post0.updated_parsed))
+        
+        content=post0.content
+        c0=content[0]
+        current_post=c0.value
+        print "good feed"
+        return True
     

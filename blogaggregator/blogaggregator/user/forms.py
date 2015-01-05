@@ -2,6 +2,7 @@ from flask_wtf import Form
 from wtforms import TextField, PasswordField, TextAreaField
 from wtforms.fields.html5 import URLField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, url
+from blogaggregator.utils import good_feed
 
 
 from .models import User
@@ -37,6 +38,10 @@ class RegisterForm(Form):
         if self.registrationkey.data != "DS106TestKey":
             self.registrationkey.errors.append("Please enter the correct registration key")
             return False
+        if not good_feed(self.atomfeed.data):
+            self.atomfeed.errors.append("Bad atom feed, please try again")
+            return False
+        
         return True
 
 class PostForm(Form):
