@@ -12,7 +12,7 @@ class RegisterForm(Form):
                     validators=[DataRequired(), Length(min=3, max=25)])
     email = TextField('Email',
                     validators=[DataRequired(), Email(), Length(min=6, max=40)])
-    atomfeed = URLField(validators=[url()])
+    atomfeed = URLField('Atom Feed',validators=[url()])
     registrationkey = TextField('Registration Key',validators=[DataRequired()])
     password = PasswordField('Password',
                                 validators=[DataRequired(), Length(min=6, max=40)])
