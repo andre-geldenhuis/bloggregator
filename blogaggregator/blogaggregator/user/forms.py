@@ -12,7 +12,7 @@ class RegisterForm(Form):
                     validators=[DataRequired(), Length(min=3, max=25)])
     email = TextField('Email',
                     validators=[DataRequired(), Email(), Length(min=6, max=40)])
-    atomfeed = URLField('Atom Feed',validators=[url()])
+    atomfeed = URLField('Atom Feed')
     registrationkey = TextField('Registration Key',validators=[DataRequired()])
     password = PasswordField('Password',
                                 validators=[DataRequired(), Length(min=6, max=40)])
@@ -38,9 +38,13 @@ class RegisterForm(Form):
         if self.registrationkey.data != "DS106TestKey":
             self.registrationkey.errors.append("Please enter the correct registration key")
             return False
-        if not good_feed(self.atomfeed.data):
-            self.atomfeed.errors.append("Bad atom feed, please try again")
-            return False
+        #only check if there is a string in self.atomfeed.data, that way users
+        #can elect to not enter a atom feed.
+        if self.atomfeed.data: 
+            if not good_feed(self.atomfeed.data):
+                print "data is:" + self.atomfeed.data + ":"
+                self.atomfeed.errors.append("Bad atom feed, please try again")
+                return False
         
         return True
 
