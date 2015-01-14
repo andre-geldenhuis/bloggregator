@@ -68,7 +68,7 @@ def addpost():
                 user_id=current_user.id,
                 atomuuid=str(uuid4()),
                 link="")
-            check_latest_update(user,new_post)
+            check_latest_update(current_user,new_post)
             flash("Thanks for the post.", 'success')
             redirect_url = request.args.get("next") or url_for("user.members")
             return redirect(redirect_url)

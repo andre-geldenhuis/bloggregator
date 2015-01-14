@@ -64,19 +64,14 @@ def home():
 @blueprint.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first()
-    print user
     if user == None:
         flash('User %s not found!' % username,'warning')
         return redirect(url_for('public.home'))
-    
-    posts=[]
+
     posts_all=db.session.query(Post).filter(Post.user_id==user.id).order_by(desc(Post.created_at)).all()
-    for post in posts_all:
-        posts.append({'author':user, 'body':post.content,'comments':post.comment_count,'postid':post.id})
-    
     return render_template('public/user.html',
                            user=user,
-                           posts=posts)
+                           posts=posts_all)
 
 
 @blueprint.route('/logout/')
