@@ -14,6 +14,8 @@ from blogaggregator.utils import summarise_post
 from blogaggregator.utils import check_latest_update
 from blogaggregator.database import db
 
+from blogaggregator.user.forms import ProfileForm
+
 from uuid import uuid4
 
 blueprint = Blueprint("user", __name__, url_prefix='/users',
@@ -25,6 +27,30 @@ blueprint = Blueprint("user", __name__, url_prefix='/users',
 @login_required
 def members():
     return render_template("users/members.html")
+
+@blueprint.route("/profile",methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = ProfileForm(request.form)
+    if request.method == "GET": #populate registration form with the existing profile
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+        form.registrationkey.data = "DS106TestKey"
+        form.atomfeed.data = current_user.atomfeed
+        form.password.data = current_user.password
+
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.atomfeed = form.atomfeed.data
+        current_user.password = form.password.data
+        db.session.commit()
+        flash("Profile modified", 'success')
+        return redirect(url_for('public.home'))
+    else:
+        flash_errors(form)
+        
+    return render_template("users/profile.html",user=current_user, form=form)
 
 @blueprint.route("/addpost/", methods=["GET","POST"])
 @login_required

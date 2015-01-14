@@ -3,6 +3,7 @@ from wtforms import TextField, PasswordField, TextAreaField
 from wtforms.fields.html5 import URLField
 from wtforms.validators import DataRequired, Email, EqualTo, Length, url
 from blogaggregator.utils import good_feed
+from flask.ext.login import current_user
 
 
 from .models import User
@@ -27,10 +28,12 @@ class RegisterForm(Form):
         initial_validation = super(RegisterForm, self).validate()
         if not initial_validation:
             return False
+        
         user = User.query.filter_by(username=self.username.data).first()
         if user:
             self.username.errors.append("Username already registered")
             return False
+
         user = User.query.filter_by(email=self.email.data).first()
         if user:
             self.email.errors.append("Email already registered")
@@ -38,6 +41,40 @@ class RegisterForm(Form):
         if self.registrationkey.data != "DS106TestKey":
             self.registrationkey.errors.append("Please enter the correct registration key")
             return False
+        #only check if there is a string in self.atomfeed.data, that way users
+        #can elect to not enter a atom feed.
+        if self.atomfeed.data: 
+            if not good_feed(self.atomfeed.data):
+                print "data is:" + self.atomfeed.data + ":"
+                self.atomfeed.errors.append("Bad atom feed, please try again")
+                return False
+        
+        return True
+
+class ProfileForm(RegisterForm):
+    
+    #define custom validator to allow user to keep their username and email the same
+    #TODO this validate routine users so much of the RegisterForm one
+    #fix it to have less code repetition 
+    def validate(self):
+        initial_validation = super(RegisterForm, self).validate()
+        if not initial_validation:
+            return False
+        
+        print current_user.username
+        
+        if current_user.username != self.username.data:
+            user = User.query.filter_by(username=self.username.data).first()
+            if user:
+                self.username.errors.append("Username already registered")
+                return False
+        
+        if current_user.email != self.email.data:
+            user = User.query.filter_by(email=self.email.data).first()
+            if user:
+                self.email.errors.append("Email already registered")
+                return False
+                
         #only check if there is a string in self.atomfeed.data, that way users
         #can elect to not enter a atom feed.
         if self.atomfeed.data: 
