@@ -1,0 +1,40 @@
+
+{% extends "layout.html" %}
+{% block content %}
+ <div class="container-narrow usercard">
+  
+  <h1>{{user.username }}'s profile</h1>
+    <br/>
+    <form id="registerForm" class="form form-register" method="POST" action="" role="form">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{form.username.label}}
+                {{form.username(placeholder="Username", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.email.label}}
+                {{form.email(placeholder="Email", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.atomfeed.label}}
+                {{form.atomfeed(placeholder="Atom Feed", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.registrationkey.label}}
+                {{form.registrationkey(placeholder="Registration Key", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.password.label}}
+                {{form.password(placeholder="Password", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.confirm.label}}
+                {{form.confirm(placeholder="Password (again)", class_="form-control")}}
+            </div>
+            <p><input class="btn btn-default btn-submit" type="submit" value="Modify Profile"></p>
+    </form>
+    <p><em>Already registered?</em> Click <a href="/">here</a> to login.</p>
+</div>
+    
+{% endblock %}
+
