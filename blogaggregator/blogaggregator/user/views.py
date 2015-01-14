@@ -63,8 +63,10 @@ def addpost():
         if form.validate_on_submit:
             content = form.content.data
             summary = summarise_post(content)
+            title = form.title.data
             new_post = Post.create(content = content,
                 summary = summary,
+                title = title,
                 user_id=current_user.id,
                 atomuuid=str(uuid4()),
                 link="")

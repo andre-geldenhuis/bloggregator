@@ -8,6 +8,7 @@
   <div class="row">
       {% for post in posts %}
           <div class="col-sm-12 usercard">
+                <h3>{{ post.title }}</h3>
                 {{ post.content|safe }}
               <div id="comments" class="col-sm-2  pull-right">
                 <p>
