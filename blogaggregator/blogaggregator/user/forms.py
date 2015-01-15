@@ -53,6 +53,8 @@ class RegisterForm(Form):
 
 class ProfileForm(RegisterForm):
     
+    username = TextField('Username')
+    
     #define custom validator to allow user to keep their username and email the same
     #TODO this validate routine users so much of the RegisterForm one
     #fix it to have less code repetition 
@@ -60,14 +62,6 @@ class ProfileForm(RegisterForm):
         initial_validation = super(RegisterForm, self).validate()
         if not initial_validation:
             return False
-        
-        print current_user.username
-        
-        if current_user.username != self.username.data:
-            user = User.query.filter_by(username=self.username.data).first()
-            if user:
-                self.username.errors.append("Username already registered")
-                return False
         
         if current_user.email != self.email.data:
             user = User.query.filter_by(email=self.email.data).first()

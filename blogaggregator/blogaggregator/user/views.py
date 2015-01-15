@@ -40,10 +40,9 @@ def profile():
         form.password.data = current_user.password
 
     if form.validate_on_submit():
-        current_user.username = form.username.data
         current_user.email = form.email.data
         current_user.atomfeed = form.atomfeed.data
-        current_user.password = form.password.data
+        current_user.set_password(form.password.data)
         db.session.commit()
         flash("Profile modified", 'success')
         return redirect(url_for('public.home'))
