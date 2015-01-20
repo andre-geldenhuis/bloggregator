@@ -9,7 +9,7 @@ html {
 }
 
 body {
-  padding-top: 60px;
+
 }
 
 section {
@@ -36,6 +36,14 @@ textarea {
     border-radius: 6px;
     background: rgba(238, 238, 238, 0.8);
     margin: 10px
+}
+
+
+div.spacer
+{
+    font-size: 0; 
+    height: 60px;
+    line-height: 0;
 }
 
 /*jumbotron override */
