@@ -50,5 +50,4 @@ def roughatom():
             content=post0.content
             c0=content[0]
             current_post=c0.value
-    1/0
     

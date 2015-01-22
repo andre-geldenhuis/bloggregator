@@ -10,10 +10,12 @@ from blogaggregator.app import create_app
 from blogaggregator.user.models import User
 from blogaggregator.settings import DevConfig, ProdConfig
 from blogaggregator.database import db
+from blogaggregator.utils import del_atom_posts
 
 from roughatom import roughatom
 
 from waitress import serve
+
 
 if os.environ.get("BLOGAGGREGATOR_ENV") == 'prod':
 	print "production enviroment"
@@ -62,11 +64,13 @@ def cmdline():
     
     posts_all=db.session.query(Post).filter(Post.user_id==1).order_by(desc(Post.created_at)).all()
     p1=posts_all[0]
-    content=p1.content
-    content=content
+    summarise_post(p1.content)
+    
+    import ipdb; ipdb.set_trace() #BREAKPOINT
 
-    1/0
-
+@manager.command
+def del_atom():
+    del_atom_posts()
 
 @manager.command
 def roughlyatom():

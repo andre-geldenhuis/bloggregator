@@ -32,26 +32,26 @@ def summarise_post(content):
     '''
     Summarises and sanitises the post (removes possible javascript CSS).  
     '''
-    if len(content)>140:
-        summary = clean(content[0:140],strip=True) + " ..."
+    #use the first 1000 characters to make sure we pass over all the guff
+    #that wordpress puts into its feed
+    content_clean = clean_feed(content[0:1000], summarise = True)   
+    if len(content_clean)>140:
+        summary = content_clean[0:140] + " ..."
     else:
-        summary = clean(content,strip=True).ljust(144) 
+        summary = content_clean.ljust(144) 
     return summary
     
-def clean_feed(content):
+def clean_feed(content, summarise = False):
     '''
     Cleans up html, removing JS etc and also removes unwanted things like 
     wordpress comment fields
     '''
-    
-    #define allowed atrtributes, in this case we will additionally allow
-    #images
-    allowed_attr={
-    'a': ['href', 'title'], 
-    'abbr': ['title'], 
-    'acronym': ['title'],
-    'img': ['src','alt'],
-    }
+    soup = BeautifulSoup(content)
+    heading_tags=['h1',
+         'h2',
+         'h3',
+         'h4',
+         'h5']
     
     allowed_tags=[u'a',
          'abbr',
@@ -65,12 +65,39 @@ def clean_feed(content):
          'ol',
          'strong',
          'ul',
-         'img']
+         'u'] 
     
-    soup = BeautifulSoup(content)
-    [x.extract() for x in soup.findAll('a', href=re.compile('^http://feeds.wordpress'))]
+    if summarise == False:
+        allowed_tags.extend(['img','p','br'])
+        allowed_tags.extend(heading_tags)
+    
+        #define allowed attributes, in this case we will additionally allow
+        #images
+        allowed_attr={
+        'a': ['href', 'title'], 
+        'abbr': ['title'], 
+        'acronym': ['title'],
+        'img': ['src','alt'],
+        }
+        
+        #remove wordpress specific comment fields
+        [x.extract() for x in soup.findAll('a', href=re.compile('^http://feeds.wordpress'))]
+    else:
+        allowed_attr={}
+        #replace headings with underlines in summaries, only the first headings are changed
+        for h in heading_tags:
+            try:
+                heading = soup.find(h)
+                heading.name = 'u'
+            except Exception:
+                pass
+            
+    
+    #~ soup = BeautifulSoup(content)    
     content = soup.prettify()
-    #content = clean(content,strip=True,tags=allowed_tags, attributes=allowed_attr)
+    #~ import ipdb; ipdb.set_trace() #BREAKPOINT
+    content = clean(content,strip=True,tags=allowed_tags, attributes=allowed_attr)
+    content=" ".join(content.split())
     return content
 
 def good_feed(atomfeed):
@@ -126,4 +153,16 @@ def feed_atom(user):
         current_post=c0.value
         print "good feed"
         return True
+
+def del_atom_posts():
+    '''
+    Delete all posts that come from atom feeds, they are currently 
+    identified by all posts that have a link.
+    '''
+    all_atom_posts = Post.query.filter(Post.link != "").all()
     
+    for atom_post in all_atom_posts:
+        atom_post.delete()
+    db.session.commit()
+    
+
