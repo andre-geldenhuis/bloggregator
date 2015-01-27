@@ -9,6 +9,9 @@ from blogaggregator.user.models import User
 from blogaggregator.user.models import Post
 import feedparser
 
+from time import mktime
+from datetime import datetime
+
 
 def flash_errors(form, category="warning"):
     '''Flash all errors for a form.'''
@@ -83,7 +86,7 @@ def clean_feed(content, summarise = False):
         #remove wordpress specific comment fields
         [x.extract() for x in soup.findAll('a', href=re.compile('^http://feeds.wordpress'))]
     else:
-        allowed_attr={}
+        allowed_attr = {}
         #replace headings with underlines in summaries, only the first headings are changed
         for h in heading_tags:
             try:
@@ -97,7 +100,7 @@ def clean_feed(content, summarise = False):
     content = soup.prettify()
     #~ import ipdb; ipdb.set_trace() #BREAKPOINT
     content = clean(content,strip=True,tags=allowed_tags, attributes=allowed_attr)
-    content=" ".join(content.split())
+    content = " ".join(content.split())
     return content
 
 def good_feed(atomfeed):
@@ -118,13 +121,38 @@ def good_feed(atomfeed):
         return True
     
     
+def refresh_feeds():
+    '''
+    Will go through every users feeds and refresh them.
+    This is useful to deal with content changes as well as formatting/parsing
+    changes server side without needign to dump the database. 
+    This will only refresh existing entries, any new ones will need to be
+    added later.
+    '''
+    all_users = User.query.all()
+    for user in all_users:
+        feed = feedparser.parse(user.atomfeed)
+        for post in feed.entries:
+            matching_posts = Post.query.filter_by(atomuuid = post.id).all()  #we only expect one, but jsut in case
+            for matched_post in matching_posts:
+                created_at = datetime.fromtimestamp(mktime(post.published_parsed))
+                updated_at = datetime.fromtimestamp(mktime(post.updated_parsed))
+                content = clean_feed(post.content[0].value)
+                summary = summarise_post(content)
+                
+                matched_post.created_at = created_at
+                matched_post.content = content 
+                matched_post.summary = summary
+                
+                db.session.commit()
+
 
 def feed_atom(user):
     '''
     Given a user with a valid atom feed, this will read and summarise the feed
     '''
     if good_feed(user.atomfeed):
-        entries=feed.entries
+        entries = feed.entries
         
         #check for the existance of the posts in the database
         for post in entries:

@@ -11,6 +11,7 @@ from blogaggregator.user.models import User
 from blogaggregator.settings import DevConfig, ProdConfig
 from blogaggregator.database import db
 from blogaggregator.utils import del_atom_posts
+from blogaggregator.utils import refresh_feeds
 
 from roughatom import roughatom
 
@@ -71,6 +72,10 @@ def cmdline():
 @manager.command
 def del_atom():
     del_atom_posts()
+
+@manager.command
+def refresh_all_feeds():
+    refresh_feeds()
 
 @manager.command
 def roughlyatom():
