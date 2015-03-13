@@ -2,36 +2,36 @@
 {% extends "layout.html" %}
 
 {% block content %}
-   <div class="commentcard">
-      <h1>Comments</h1>
-   </div> 
-  
-      {% for comment in comments_all %}
-          <div class="col-sm-12 commentcard">
-            <div class="col-sm-12">
-                {{ comment.content|safe }}
+    <div class="col-md-offset-2 col-md-8">
+        <div class="commentcard">
+       
+           <p> </p>
+           <h3>{{ post.summary|safe }}</h3>
+          <h3>Comments</h3>
+          <hr>
+          {% for comment in comments_all %}
+                <div>
+                    <p>{{ comment.content|safe }}</p>
+                    <p><b>{{ comment.user.username|capitalize  }}</b></p>
+                    <hr>
+                </div>
+          {% endfor %}
+          
+        {% if allowedit == True %}
+            
+            <div>
+                <p><a href="{{ url_for('user.makecomment',username=username,postid=postid,commentmethod='edit') }}" class="btn btn-primary btn-large"> Edit last comment &raquo; </a></p>
             </div>
-            <div class="col-sm-12">
-                <hr>
-            </div>
-            <div class="col-sm-2">
-                <b>{{ comment.user.username|capitalize  }}</b>
-            </div>
+            <p class="smallspace">  </p>
+    
+          {% endif %}
+        {% if current_user and current_user.is_authenticated() %}
+          <div>
+              <p><a href="{{ url_for('user.makecomment',username=username,postid=postid,commentmethod='new') }}" class="btn btn-primary btn-large"> Make new comment &raquo; </a></p>
           </div>
-      {% endfor %}
-      
-    {% if allowedit == True %}
-        
-        <div class="col-sm-12 ">
-            <p><a href="{{ url_for('user.makecomment',username=username,postid=postid,commentmethod='edit') }}" class="btn btn-primary btn-large"> Edit last comment &raquo; </a></p>
-        </div>
-
-      {% endif %}
-    {% if current_user and current_user.is_authenticated() %}
-      <div class="col-sm-12 ">
-          <p><a href="{{ url_for('user.makecomment',username=username,postid=postid,commentmethod='new') }}" class="btn btn-primary btn-large"> Make new comment &raquo; </a></p>
-      </div>
-    {% endif %}
-      
+          <p class="smallspace">  </p>
+        {% endif %}
+     </div>
+    </div>
 
 {% endblock %}

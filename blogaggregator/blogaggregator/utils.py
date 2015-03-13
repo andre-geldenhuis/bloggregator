@@ -68,7 +68,9 @@ def clean_feed(content, summarise = False):
          'ol',
          'strong',
          'ul',
-         'u'] 
+         'u',
+         'p',
+         'br'] 
     
     if summarise == False:
         allowed_tags.extend(['img','p','br'])

@@ -94,7 +94,8 @@ def comment(username,postid):
         if current_user.is_authenticated():
             if last_comment_userid == current_user.id:
                 allowedit = True
-    return render_template('users/comments.html',username=username,postid=postid,comments_all=comments_all, allowedit=allowedit)
+    post = Post.query.get(postid)
+    return render_template('users/comments.html',username=username,post=post,postid=postid,comments_all=comments_all, allowedit=allowedit)
     
 
 # TODO fix, this doesn't also display the commments as it should    
