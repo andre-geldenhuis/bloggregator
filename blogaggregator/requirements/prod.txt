@@ -4,7 +4,7 @@
 Flask==1.0
 MarkupSafe==0.23
 Werkzeug==0.15.3
-Jinja2==2.7.3
+Jinja2==2.11.3
 itsdangerous==0.24
 
 #Probably unneeded TODO check
