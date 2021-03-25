@@ -12,7 +12,7 @@ Flask-WTF==0.10.2
 Jinja2==2.7.3
 Mako==1.0.0
 MarkupSafe==0.23
-PyYAML==5.1
+PyYAML==5.4
 SQLAlchemy==0.9.8
 WTForms==2.0.1
 WebOb==1.4
